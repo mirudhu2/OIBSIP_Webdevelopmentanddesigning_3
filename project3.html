@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temperature Converter</title>
+
+<style>
+:root {
+    --bg: linear-gradient(135deg, #667eea, #764ba2);
+    --card: rgba(255,255,255,0.15);
+    --text: #fff;
+}
+
+body.dark {
+    --bg: linear-gradient(135deg, #1e1e2f, #121212);
+    --card: rgba(0,0,0,0.5);
+    --text: #f1f1f1;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg);
+    font-family: 'Poppins', sans-serif;
+    transition: 0.5s;
+}
+
+/* Card */
+.container {
+    background: var(--card);
+    backdrop-filter: blur(20px);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    color: var(--text);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: fadeIn 1s ease;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    margin-bottom: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+/* Button Animation */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #ff7eb3;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: #ff4f81;
+}
+
+/* Toggle */
+.toggle {
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Result Animation */
+.result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    animation: pop 0.5s;
+}
+
+@keyframes pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.error {
+    color: #ffcccc;
+    font-size: 14px;
+}
+
+/* Mobile */
+@media(max-width: 400px) {
+    .container {
+        padding: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🌡 Converter</h1>
+
+    <input type="text" id="temp" placeholder="Enter temperature">
+
+    <select id="unit">
+        <option value="c">Celsius</option>
+        <option value="f">Fahrenheit</option>
+        <option value="k">Kelvin</option>
+    </select>
+
+    <button onclick="convert()">Convert</button>
+
+    <div class="result" id="result"></div>
+    <div class="error" id="error"></div>
+
+    <div class="toggle" onclick="toggleDark()">🌙 Toggle Dark Mode</div>
+</div>
+
+<script>
+function convert() {
+    let temp = document.getElementById("temp").value;
+    let unit = document.getElementById("unit").value;
+    let result = document.getElementById("result");
+    let error = document.getElementById("error");
+
+    result.innerHTML = "";
+    error.innerHTML = "";
+
+    if (temp === "" || isNaN(temp)) {
+        error.innerHTML = "⚠ Enter valid number!";
+        return;
+    }
+
+    temp = parseFloat(temp);
+
+    if (unit === "c") {
+        result.innerHTML =
+            ((temp * 9/5) + 32).toFixed(2) + " °F<br>" +
+            (temp + 273.15).toFixed(2) + " K";
+    }
+
+    if (unit === "f") {
+        let c = (temp - 32) * 5/9;
+        result.innerHTML =
+            c.toFixed(2) + " °C<br>" +
+            (c + 273.15).toFixed(2) + " K";
+    }
+
+    if (unit === "k") {
+        let c = temp - 273.15;
+        result.innerHTML =
+            c.toFixed(2) + " °C<br>" +
+            ((c * 9/5) + 32).toFixed(2) + " °F";
+    }
+}
+
+function toggleDark() {
+    document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
